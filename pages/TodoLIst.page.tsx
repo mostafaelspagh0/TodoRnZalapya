@@ -6,36 +6,38 @@ import {
   TextInput,
   View,
   Text,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CheckBox from "../components/checkBox";
+
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { FontAwesome5 } from "@expo/vector-icons";
 import {
   addTodo,
   deleteTodo,
-  markTodoDone,
-  selectTodo,
-} from "../redux/slices/todo/todoSlice";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { FontAwesome5 } from "@expo/vector-icons";
+  selectTodoLists,
+  toggleTodoDone,
+} from "../redux/slices/todolists/todoListsSlice";
 
-const TodoListPage = () => {
+const TodoListPage = ({ listId }: { listId: number }) => {
   const appDispatch = useAppDispatch();
-  const todos: TodoState = useAppSelector(selectTodo);
+  const todos = useAppSelector(selectTodoLists);
+  console.log("todos", todos);
   const [currentTodo, setCurrentTodo] = useState("");
 
   const handleAddTodo = () => {
     if (currentTodo === "") return;
-    appDispatch(addTodo(currentTodo));
+    appDispatch(addTodo({ title: currentTodo, listId }));
     setCurrentTodo("");
   };
 
   const handleToggleDone = (todoId: TodoId) => {
-    appDispatch(markTodoDone(todoId));
+    appDispatch(toggleTodoDone({ todoId, listId }));
   };
 
   const handleDeleteTodo = (todoId: TodoId) => {
-    appDispatch(deleteTodo(todoId));
+    appDispatch(deleteTodo({ todoId, listId }));
   };
 
   return (
@@ -52,7 +54,7 @@ const TodoListPage = () => {
         </View>
       </View>
       <ScrollView>
-        {todos.todos.map((todo: Todo) => (
+        {todos.todoLists[listId].todos.map((todo: Todo) => (
           <View key={todo.id} style={styles.todoItem}>
             <Text style={styles.todoTile}>{todo.title}</Text>
             <View style={styles.todoActions}>
@@ -108,6 +110,5 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
 
 export default TodoListPage;

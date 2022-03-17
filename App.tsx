@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import TodoListPage from "./pages/TodoLIst.page";
 
 function App() {
-  return <TodoListPage />;
+  return <TodoListPage listId={0} />;
 }
 
 const main = () => {

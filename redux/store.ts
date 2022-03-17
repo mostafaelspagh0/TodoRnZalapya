@@ -1,6 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import todoSlice from "./slices/todo/todoSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   FLUSH,
@@ -12,9 +11,10 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+import todoListsSlice from "./slices/todolists/todoListsSlice";
 
 const rootReducer = combineReducers({
-  todos: todoSlice,
+  todos: todoListsSlice,
 });
 const persistConfig = {
   key: "root",
