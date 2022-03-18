@@ -16,15 +16,13 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import {
   addTodo,
   deleteTodo,
-  selectTodoLists,
-  toggleTodoDone,
-} from "../redux/slices/todolists/todoListsSlice";
+  selectTodoListWithId,
+  toggleTodoDone
 
 const TodoListPage = ({ listId }: { listId: number }) => {
-  const appDispatch = useAppDispatch();
-  const todos = useAppSelector(selectTodoLists);
-  console.log("todos", todos);
-  const [currentTodo, setCurrentTodo] = useState("");
+  const appDispatch = useAppDispatch()
+  const todos = useAppSelector(selectTodoListWithId(listId))
+  const [currentTodo, setCurrentTodo] = useState('')
 
   const handleAddTodo = () => {
     if (currentTodo === "") return;
