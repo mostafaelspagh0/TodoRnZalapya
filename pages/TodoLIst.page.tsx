@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   Pressable,
@@ -6,18 +6,18 @@ import {
   TextInput,
   View,
   Text,
-  StyleSheet,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CheckBox from "../components/checkBox";
-
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { FontAwesome5 } from "@expo/vector-icons";
+  StyleSheet
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import CheckBox from '../components/checkBox'
+import { useAppDispatch, useAppSelector } from '../redux/store'
+import { FontAwesome5 } from '@expo/vector-icons'
 import {
   addTodo,
   deleteTodo,
   selectTodoListWithId,
   toggleTodoDone
+} from '../redux/slices/todolists/todoListsSlice'
 
 const TodoListPage = ({ listId }: { listId: number }) => {
   const appDispatch = useAppDispatch()
@@ -25,18 +25,18 @@ const TodoListPage = ({ listId }: { listId: number }) => {
   const [currentTodo, setCurrentTodo] = useState('')
 
   const handleAddTodo = () => {
-    if (currentTodo === "") return;
-    appDispatch(addTodo({ title: currentTodo, listId }));
-    setCurrentTodo("");
-  };
+    if (currentTodo === '') return
+    appDispatch(addTodo({ title: currentTodo, listId }))
+    setCurrentTodo('')
+  }
 
   const handleToggleDone = (todoId: TodoId) => {
-    appDispatch(toggleTodoDone({ todoId, listId }));
-  };
+    appDispatch(toggleTodoDone({ todoId, listId }))
+  }
 
   const handleDeleteTodo = (todoId: TodoId) => {
-    appDispatch(deleteTodo({ todoId, listId }));
-  };
+    appDispatch(deleteTodo({ todoId, listId }))
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,17 +48,17 @@ const TodoListPage = ({ listId }: { listId: number }) => {
           value={currentTodo}
         />
         <View style={styles.addTodoButton}>
-          <Button onPress={handleAddTodo} title="add Todo" color={"green"} />
+          <Button onPress={handleAddTodo} title="add Todo" color={'green'} />
         </View>
       </View>
       <ScrollView>
-        {todos.todoLists[listId].todos.map((todo: Todo) => (
+        {todos.todos.map((todo: Todo) => (
           <View key={todo.id} style={styles.todoItem}>
             <Text style={styles.todoTile}>{todo.title}</Text>
             <View style={styles.todoActions}>
               <Pressable
                 style={styles.todoAciton}
-                onPress={(e) => handleDeleteTodo(todo.id)}
+                onPress={e => handleDeleteTodo(todo.id)}
               >
                 <FontAwesome5 name="trash" size={24} color="red" />
               </Pressable>
@@ -72,41 +72,41 @@ const TodoListPage = ({ listId }: { listId: number }) => {
         ))}
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   addTodoSection: {
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   addTodoInput: {
     flex: 1,
     borderWidth: 1,
     margin: 10,
-    padding: 10,
+    padding: 10
   },
   addTodoButton: {
-    justifyContent: "center",
-    margin: 10,
+    justifyContent: 'center',
+    margin: 10
   },
   todoItem: {
     margin: 10,
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1
   },
   todoTile: { flex: 1, fontSize: 16 },
   todoActions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   todoAciton: {
-    margin: 10,
-  },
-});
+    margin: 10
+  }
+})
 
-export default TodoListPage;
+export default TodoListPage
