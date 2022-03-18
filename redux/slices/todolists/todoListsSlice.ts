@@ -17,18 +17,18 @@ export const todoListsSlice = createSlice({
   name: 'todoLists',
   initialState,
   reducers: {
-    addTodoList: (state, action: PayloadAction<string>) => {
+    addTodoList: (state, action: PayloadAction<{ title: string }>) => {
       state.todoLists.push({
         todos: [],
         lastId: 0,
         listId: state.lastListId + 1,
-        listName: action.payload
+        listName: action.payload.title
       })
       state.lastListId = state.lastListId + 1
     },
-    deleteTodoList: (state, action: PayloadAction<number>) => {
+    deleteTodoList: (state, action: PayloadAction<{ listId: TodoListId }>) => {
       state.todoLists = state.todoLists.filter(
-        todoList => todoList.listId !== action.payload
+        todoList => todoList.listId !== action.payload.listId
       )
     },
     addTodo: (

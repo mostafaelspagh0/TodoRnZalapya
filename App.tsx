@@ -1,24 +1,27 @@
-import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider } from "react-redux";
-import store, { persistor } from "./redux/store";
-import { PersistGate } from "redux-persist/integration/react";
-import TodoListPage from "./pages/TodoLIst.page";
+import React from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { Provider } from 'react-redux'
+import store, { persistor } from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import { NavigationContainer } from '@react-navigation/native'
+import MainNavigator from './navigation/main.navigaitor'
 
 function App() {
-  return <TodoListPage listId={0} />;
+  return <MainNavigator/>
 }
 
 const main = () => {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <App />
-        </SafeAreaProvider>
-      </PersistGate>
-    </Provider>
-  );
-};
+    <NavigationContainer>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <App />
+          </SafeAreaProvider>
+        </PersistGate>
+      </Provider>
+    </NavigationContainer>
+  )
+}
 
-export default main;
+export default main

@@ -1,42 +1,34 @@
 import React, { useState } from 'react'
 import {
   Button,
-  Pressable,
   ScrollView,
   TextInput,
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Pressable
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import CheckBox from '../components/checkBox'
 import { useAppDispatch, useAppSelector } from '../redux/store'
-import { FontAwesome5 } from '@expo/vector-icons'
 import {
-  addTodo,
-  deleteTodo,
-  selectTodoListWithId,
-  toggleTodoDone
+  addTodoList,
+  deleteTodoList,
+  selectTodoLists
 } from '../redux/slices/todolists/todoListsSlice'
 
-const TodoListPage = ({ route, navigation }: TodoListPageProps) => {
-  const listId = route.params.listId
+const Home = ({ route, navigation }: HomePageProps) => {
   const appDispatch = useAppDispatch()
-  const todos = useAppSelector(selectTodoListWithId(listId))
+  const todoLists = useAppSelector(selectTodoLists)
   const [currentTodo, setCurrentTodo] = useState('')
 
   const handleAddTodo = () => {
     if (currentTodo === '') return
-    appDispatch(addTodo({ title: currentTodo, listId }))
+    appDispatch(addTodoList({ title: currentTodo }))
     setCurrentTodo('')
   }
 
-  const handleToggleDone = (todoId: TodoId) => {
-    appDispatch(toggleTodoDone({ todoId, listId }))
-  }
-
-  const handleDeleteTodo = (todoId: TodoId) => {
-    appDispatch(deleteTodo({ todoId, listId }))
+  const handleDeleteTodo = (listId: TodoListId) => {
+    appDispatch(deleteTodoList({ listId }))
   }
 
   return (
@@ -53,23 +45,18 @@ const TodoListPage = ({ route, navigation }: TodoListPageProps) => {
         </View>
       </View>
       <ScrollView>
-        {todos.todos.map((todo: Todo) => (
-          <View key={todo.id} style={styles.todoItem}>
-            <Text style={styles.todoTile}>{todo.title}</Text>
-            <View style={styles.todoActions}>
-              <Pressable
-                style={styles.todoAciton}
-                onPress={e => handleDeleteTodo(todo.id)}
-              >
-                <FontAwesome5 name="trash" size={24} color="red" />
-              </Pressable>
-              <CheckBox
-                style={styles.todoAciton}
-                onChange={() => handleToggleDone(todo.id)}
-                checked={todo.done}
-              />
+        {todoLists.todoLists.map((todoList: TodoList) => (
+          <Pressable
+            onPress={() =>
+              navigation.navigate('TodoList', { listId: todoList.listId })
+            }
+            onLongPress={() => handleDeleteTodo(todoList.listId)}
+            key={todoList.listId}
+          >
+            <View style={styles.todoItem}>
+              <Text style={styles.todoTile}>{todoList.listName}</Text>
             </View>
-          </View>
+          </Pressable>
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -110,4 +97,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default TodoListPage
+export default Home
